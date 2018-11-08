@@ -28,18 +28,12 @@ class UserController extends Controller
         return view('users.create');
     }
 
-    public function show(User $user){
-//        $pipe = [
-//            'CheckForMaintenacceMode',
-//            'EncryptCookies',
-//            'AddQueuedCookieToResponse',
-//            'StartSession',
-//            'ShowErrorsFromSession',
-//            'VerfiyCsrfToekn'
-//        ];
-//        $pipe = array_reverse($pipe);
-//        dd($pipe);
-        return view('users.show',compact('user'));
+    public function show(User $user)
+    {
+        $statuses = $user->statuses()
+            ->orderBy('created_at', 'desc')
+            ->paginate(30);
+        return view('users.show', compact('user', 'statuses'));
     }
 
     public function store(Request $request){
